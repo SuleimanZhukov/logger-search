@@ -1,6 +1,6 @@
 import React from "react";
 
-const MainTable = () => {
+const MainTable = (props) => {
   return (
     <table className="table">
       <thead>
@@ -15,28 +15,28 @@ const MainTable = () => {
       </thead>
       <tbody>
         <tr>
-          <th>data</th>
-          <th>data</th>
-          <th>data</th>
-          <th>data</th>
-          <th>data</th>
-          <th>data</th>
+          <td>data</td>
+          <td>data</td>
+          <td>data</td>
+          <td>data</td>
+          <td>data</td>
+          <td>data</td>
         </tr>
         <tr>
-          <th>data</th>
-          <th>data</th>
-          <th>data</th>
-          <th>data</th>
-          <th>data</th>
-          <th>data</th>
+          <td>data</td>
+          <td>data</td>
+          <td>data</td>
+          <td>data</td>
+          <td>data</td>
+          <td>data</td>
         </tr>
         <tr>
-          <th>data</th>
-          <th>data</th>
-          <th>data</th>
-          <th>data</th>
-          <th>data</th>
-          <th>data</th>
+          <td>data</td>
+          <td>data</td>
+          <td>data</td>
+          <td>data</td>
+          <td>data</td>
+          <td>data</td>
         </tr>
       </tbody>
     </table>
