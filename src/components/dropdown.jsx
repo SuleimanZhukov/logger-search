@@ -5,23 +5,11 @@ const Dropdown = (props) => {
 
   return (
     <div className="dropdown show">
-      <label htmlFor="dropdownMenuLink">{label}</label>
-      <a
-        className="btn btn-secondary dropdown-toggle"
-        role="button"
-        id="dropdownMenuLink"
-        data-toggle="dropdown"
-        aria-haspopup="true"
-        aria-expanded="false"
-      >
-        Choose
-      </a>
-
-      <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
-        <a className="dropdown-item">Action</a>
-        <a className="dropdown-item">Another action</a>
-        <a className="dropdown-item">Something else here</a>
-      </div>
+      <label>{label}</label>
+      <select>
+        <option value="first">First</option>
+        <option value="second">Second</option>
+      </select>
     </div>
   );
 };

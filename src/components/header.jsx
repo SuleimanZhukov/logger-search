@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import InputComponent from "./inputComponent";
 import Dropdown from "./dropdown";
+import App from "../App";
 import "../css/header.css";
 
 const data = [
@@ -12,14 +13,21 @@ const data = [
   "Application ID",
 ];
 
-const Header = ({ handleSearch, handleOnChange }) => {
+const Header = ({ handleSearch }) => {
+  const [name, setName] = useState("");
+
   return (
-    <form className="form" onSubmit={handleSearch}>
-      <InputComponent
-        label={data[0]}
-        handleOnChange={(e) => handleOnChange(e)}
-      />
-      <InputComponent label={data[0]} />
+    <form className="form" onSubmit={(e) => handleSearch(e, name)}>
+      <div className="form-group">
+        <label htmlFor="input-field">Employee Name</label>
+        <input
+          className="form-control"
+          id="input-field"
+          placeholder="e.g Admin.User"
+          onChange={(e) => setName(e.target.value)}
+        />
+      </div>
+      <Dropdown label={data[1]} />
       <InputComponent label={data[0]} />
       <InputComponent label={data[0]} />
       <InputComponent label={data[0]} />
