@@ -1,18 +1,16 @@
 import React from "react";
 
-const Table = (props) => {
-  const { data } = props;
-
+const Table = ({ data, onSort }) => {
   return (
     <table className="table">
       <thead>
         <tr>
-          <th>Log ID</th>
-          <th>Application Type</th>
-          <th>Application ID</th>
-          <th>Action</th>
-          <th>Action Details</th>
-          <th>Data:Time</th>
+          <th onClick={() => onSort("logId")}>Log ID</th>
+          <th onClick={() => onSort("applicationType")}>Application Type</th>
+          <th onClick={() => onSort("applicationId")}>Application ID</th>
+          <th onClick={() => onSort("actionType")}>Action</th>
+          <th onClick={() => onSort("")}>Action Details</th>
+          <th onClick={() => onSort("creationTimestamp")}>Data:Time</th>
         </tr>
       </thead>
       <tbody>

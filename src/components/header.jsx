@@ -1,5 +1,7 @@
 import React from "react";
 import InputComponent from "./inputComponent";
+import Dropdown from "./dropdown";
+import "../css/header.css";
 
 const data = [
   "Employee Name",
@@ -10,35 +12,50 @@ const data = [
   "Application ID",
 ];
 
-const Header = () => {
+const Header = ({ handleSearch, handleOnChange }) => {
   return (
-    <table className="table">
-      <tbody>
-        <tr>
-          <th>
-            <InputComponent label={data[0]} />
-          </th>
-          <th>
-            <InputComponent label={data[1]} />
-          </th>
-          <th>
-            <InputComponent label={data[2]} />
-          </th>
-          <th>
-            <InputComponent label={data[3]} />
-          </th>
-          <th>
-            <InputComponent label={data[4]} />
-          </th>
-          <th>
-            <InputComponent label={data[5]} />
-          </th>
-          <th>
-            <button className="btn btn-danger">Search </button>
-          </th>
-        </tr>
-      </tbody>
-    </table>
+    <form className="form" onSubmit={handleSearch}>
+      <InputComponent
+        label={data[0]}
+        handleOnChange={(e) => handleOnChange(e)}
+      />
+      <InputComponent label={data[0]} />
+      <InputComponent label={data[0]} />
+      <InputComponent label={data[0]} />
+      <InputComponent label={data[0]} />
+      <InputComponent label={data[0]} />
+      <input type="submit" className="btn btn-outline-primary" value="Search" />
+    </form>
+
+    // <form>
+    //   <table className="table">
+    //     <tbody>
+    //       <tr>
+    //         <th>
+    //           <InputComponent label={data[0]} />
+    //         </th>
+    //         <th>
+    //           <Dropdown label={data[1]} />
+    //         </th>
+    //         <th>
+    //           <Dropdown label={data[2]} />
+    //         </th>
+    //         <th>
+    //           <InputComponent label={data[3]} />
+    //         </th>
+    //         <th>
+    //           <InputComponent label={data[4]} />
+    //         </th>
+    //         <th>
+    //           <InputComponent label={data[5]} />
+    //         </th>
+    //         <th>
+    //           <button className="btn btn-outline-primary">Search</button>
+    //         </th>
+    //       </tr>
+    //     </tbody>
+    //   </table>
+    // </form>
   );
 };
 
