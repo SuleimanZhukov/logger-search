@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
-import Table from "./components/table";
+import React, { useState } from "react";
 import { getData } from "./services/fakeDataService";
-import Pagination from "./components/pagination";
 import { paginate } from "./utils/paginate";
+import Pagination from "./components/pagination";
+import Header from "./components/header";
+import Table from "./components/table";
 import "./css/App.css";
 
 function App() {
@@ -10,15 +11,16 @@ function App() {
   const [pageSize, setPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const dataPage = paginate(data, currentPage, pageSize);
-
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
 
+  const dataPage = paginate(data, currentPage, pageSize);
+
   return (
     <div className="container">
-      <Table />
+      <Header />
+      <Table data={dataPage} />
       <Pagination
         itemsCount={data.length}
         pageSize={pageSize}

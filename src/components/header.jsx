@@ -10,7 +10,7 @@ const data = [
   "Application ID",
 ];
 
-const HeaderTable = () => {
+const Header = () => {
   return (
     <table className="table">
       <tbody>
@@ -42,4 +42,4 @@ const HeaderTable = () => {
   );
 };
 
-export default HeaderTable;
+export default Header;
