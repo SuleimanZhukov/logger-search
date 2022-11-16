@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getData } from "./services/fakeDataService";
+import dataService from "./services/dataService";
 import { paginate } from "./utils/paginate";
 import Pagination from "./components/pagination";
 import Header from "./components/header";
@@ -16,7 +17,14 @@ function App() {
     order: "asc",
   });
 
-  const [searchInput, setSearchInput] = useState({ employeeName: 0 });
+  const [searchInput, setSearchInput] = useState({
+    employeeName: 0,
+    actionType: "",
+    applicationType: "",
+    fromDate: "",
+    toDate: "",
+    applicationId: "",
+  });
 
   useEffect(() => {
     const filtered = searchInput.employeeName
@@ -28,11 +36,24 @@ function App() {
     setData(sorted);
   }, [searchInput, sortColumn]);
 
-  const handleSearch = (e, name) => {
+  const handleSearch = (
+    e,
+    name,
+    actionType,
+    applicationType,
+    fromDate,
+    toDate,
+    applicationId
+  ) => {
     e.preventDefault();
 
     setSearchInput({
       employeeName: name === "" ? 0 : parseInt(name),
+      actionType: name === "" ? 0 : actionType,
+      applicationType: name === "" ? 0 : applicationType,
+      fromDate: name === "" ? 0 : fromDate,
+      toDate: name === "" ? 0 : toDate,
+      applicationId: name === "" ? 0 : applicationId,
     });
     setCurrentPage(1);
   };
@@ -43,28 +64,22 @@ function App() {
 
   const handleSort = (newSortColumn) => {
     setSortColumn(newSortColumn);
-    // const newSortColumn = { ...sortColumn };
-    // if (newSortColumn.column === column) {
-    //   newSortColumn.order = sortColumn.order === "asc" ? "desc" : "asc";
-    // } else {
-    //   newSortColumn.column = column;
-    //   newSortColumn.order = "asc";
-    // }
-    // setSortColumn(newSortColumn);
   };
 
   const dataPage = paginate(data, currentPage, pageSize);
 
   return (
-    <div className="container">
+    <div className="topContainer">
       <Header handleSearch={handleSearch} />
-      <Table data={dataPage} sortColumn={sortColumn} onSort={handleSort} />
-      <Pagination
-        itemsCount={data.length}
-        pageSize={pageSize}
-        currentPage={currentPage}
-        onPageChange={handlePageChange}
-      />
+      <div className="container">
+        <Table data={dataPage} sortColumn={sortColumn} onSort={handleSort} />
+        <Pagination
+          itemsCount={data.length}
+          pageSize={pageSize}
+          currentPage={currentPage}
+          onPageChange={handlePageChange}
+        />
+      </div>
     </div>
   );
 }

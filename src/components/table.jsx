@@ -1,30 +1,11 @@
 import React from "react";
+import TableHead from "./tableHead";
+import Pagination from "./pagination";
 
 const Table = ({ data, sortColumn, onSort }) => {
-  const raiseSort = (column) => {
-    const newSortColumn = { ...sortColumn };
-    if (newSortColumn.column === column) {
-      newSortColumn.order = sortColumn.order === "asc" ? "desc" : "asc";
-    } else {
-      newSortColumn.column = column;
-      newSortColumn.order = "asc";
-    }
-
-    onSort(newSortColumn);
-  };
-
   return (
     <table className="table">
-      <thead>
-        <tr>
-          <th onClick={() => raiseSort("logId")}>Log ID</th>
-          <th onClick={() => raiseSort("applicationType")}>Application Type</th>
-          <th onClick={() => raiseSort("applicationId")}>Application ID</th>
-          <th onClick={() => raiseSort("actionType")}>Action</th>
-          <th onClick={() => raiseSort("")}>Action Details</th>
-          <th onClick={() => raiseSort("creationTimestamp")}>Data:Time</th>
-        </tr>
-      </thead>
+      <TableHead sortColumn={sortColumn} onSort={onSort} />
       <tbody>
         {data.map((item) => (
           <tr key={item.logId}>
@@ -36,30 +17,6 @@ const Table = ({ data, sortColumn, onSort }) => {
             <td>{item.creationTimestamp}</td>
           </tr>
         ))}
-        {/* <tr>
-          <td>data</td>
-          <td>data</td>
-          <td>data</td>
-          <td>data</td>
-          <td>data</td>
-          <td>data</td>
-        </tr>
-        <tr>
-          <td>data</td>
-          <td>data</td>
-          <td>data</td>
-          <td>data</td>
-          <td>data</td>
-          <td>data</td>
-        </tr>
-        <tr>
-          <td>data</td>
-          <td>data</td>
-          <td>data</td>
-          <td>data</td>
-          <td>data</td>
-          <td>data</td>
-        </tr> */}
       </tbody>
     </table>
   );
