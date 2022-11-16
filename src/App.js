@@ -21,14 +21,16 @@ function App() {
     employeeName: 0,
     actionType: "",
     applicationType: "",
-    fromDate: "",
-    toDate: "",
+    fromDate: null,
+    toDate: null,
     applicationId: "",
   });
 
   useEffect(() => {
-    const filtered = searchInput.employeeName
-      ? data.filter((i) => i.logId === searchInput.employeeName)
+    const filtered = searchInput.fromDate
+      ? data.filter(
+          (i) => Date.parse(i.creationTimestamp) > searchInput.fromDate
+        )
       : data;
 
     const sorted = _.orderBy(filtered, [sortColumn.column], [sortColumn.order]);
@@ -49,11 +51,11 @@ function App() {
 
     setSearchInput({
       employeeName: name === "" ? 0 : parseInt(name),
-      actionType: name === "" ? 0 : actionType,
-      applicationType: name === "" ? 0 : applicationType,
-      fromDate: name === "" ? 0 : fromDate,
-      toDate: name === "" ? 0 : toDate,
-      applicationId: name === "" ? 0 : applicationId,
+      actionType: actionType === "" ? "" : actionType,
+      applicationType: applicationType === "" ? "" : applicationType,
+      fromDate: fromDate === "" ? null : Date.parse(fromDate),
+      toDate: toDate === "" ? null : Date.parse(toDate),
+      applicationId: applicationId === "" ? 0 : parseInt(applicationId),
     });
     setCurrentPage(1);
   };

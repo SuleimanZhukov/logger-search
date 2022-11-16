@@ -14,15 +14,6 @@ const data = [
   "Application ID",
 ];
 
-const actionType = [
-  "Employee Name",
-  "Action type",
-  "Application type",
-  "From Data",
-  "To Date",
-  "Application ID",
-];
-
 const Header = ({ handleSearch }) => {
   const [name, setName] = useState("");
   const [actionType, setActionType] = useState("");
