@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
+import axios from "./services/axios";
 import { getData } from "./services/fakeDataService";
-import dataService from "./services/dataService";
 import { paginate } from "./utils/paginate";
 import Pagination from "./components/pagination";
 import Header from "./components/header";
 import Table from "./components/table";
+import SearchContext from "./context/searchContext";
 import _ from "lodash";
 import "./css/App.css";
 
@@ -16,7 +17,6 @@ function App() {
     column: "logId",
     order: "asc",
   });
-
   const [searchInput, setSearchInput] = useState({
     employeeName: 0,
     actionType: "",
@@ -27,11 +27,18 @@ function App() {
   });
 
   useEffect(() => {
-    const filtered = searchInput.fromDate
-      ? data.filter(
-          (i) => Date.parse(i.creationTimestamp) > searchInput.fromDate
-        )
+    // async function fetchData() {
+    //   const request = await axios.get("");
+    //   setData(request.data.result.auditLog);
+    // }
+
+    // fetchData();
+
+    const filtered = searchInput.employeeName
+      ? data.filter((i) => i.logId === searchInput.employeeName)
       : data;
+
+    console.log("employeeName", searchInput.employeeName);
 
     const sorted = _.orderBy(filtered, [sortColumn.column], [sortColumn.order]);
 
@@ -49,14 +56,14 @@ function App() {
   ) => {
     e.preventDefault();
 
-    setSearchInput({
-      employeeName: name === "" ? 0 : parseInt(name),
-      actionType: actionType === "" ? "" : actionType,
-      applicationType: applicationType === "" ? "" : applicationType,
-      fromDate: fromDate === "" ? null : Date.parse(fromDate),
-      toDate: toDate === "" ? null : Date.parse(toDate),
-      applicationId: applicationId === "" ? 0 : parseInt(applicationId),
-    });
+    // setSearchInput({
+    //   employeeName: name === "" ? 0 : parseInt(name),
+    //   actionType: actionType === "" ? "" : actionType,
+    //   applicationType: applicationType === "" ? "" : applicationType,
+    //   fromDate: fromDate === "" ? null : Date.parse(fromDate),
+    //   toDate: toDate === "" ? null : Date.parse(toDate),
+    //   applicationId: applicationId === "" ? 0 : parseInt(applicationId),
+    // });
     setCurrentPage(1);
   };
 
@@ -71,18 +78,24 @@ function App() {
   const dataPage = paginate(data, currentPage, pageSize);
 
   return (
-    <div className="topContainer">
-      <Header handleSearch={handleSearch} />
-      <div className="container">
-        <Table data={dataPage} sortColumn={sortColumn} onSort={handleSort} />
-        <Pagination
-          itemsCount={data.length}
-          pageSize={pageSize}
-          currentPage={currentPage}
-          onPageChange={handlePageChange}
-        />
+    <SearchContext.Provider
+      value={{
+        setSearchInput: setSearchInput,
+      }}
+    >
+      <div className="topContainer">
+        <Header handleSearch={handleSearch} />
+        <div className="container">
+          <Table data={dataPage} sortColumn={sortColumn} onSort={handleSort} />
+          <Pagination
+            itemsCount={data.length}
+            pageSize={pageSize}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+          />
+        </div>
       </div>
-    </div>
+    </SearchContext.Provider>
   );
 }
 export default App;
