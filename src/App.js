@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import useSetup from "./hooks/useSetup";
-import axios from "./services/axios";
+import { fetchData } from "./services/axios";
 import { paginate } from "./utils/paginate";
 import Pagination from "./components/pagination";
 import Header from "./components/header";
 import Table from "./components/table";
-import SearchContext from "./context/searchContext";
 import _ from "lodash";
 import "./css/App.css";
 
@@ -13,26 +12,33 @@ function App() {
   const states = useSetup();
 
   useEffect(() => {
-    // async function fetchData() {
-    //   const request = await axios.get("");
-    //   states.setData(request.data.result.auditLog);
-    // }
+    fetchData()
+      .then((json) => {
+        states.setData(json);
+        return json;
+      })
+      .then((json) => {
+        let filtered = json;
 
-    // fetchData();
+        if (states.searchInput.fromDate && states.searchInput.toDate) {
+          filtered = _.filter(json, (i) => {
+            if (
+              Date.parse(i.creationTimestamp) > states.searchInput.fromDate &&
+              Date.parse(i.creationTimestamp) < states.searchInput.toDate
+            ) {
+              return i;
+            }
+          });
+        }
 
-    const filtered = states.searchInput.employeeName
-      ? states.data.filter((i) => i.logId === states.searchInput.employeeName)
-      : states.data;
+        const sorted = _.orderBy(
+          filtered,
+          [states.sortColumn.column],
+          [states.sortColumn.order]
+        );
 
-    console.log("employeeName", states.searchInput.employeeName);
-
-    const sorted = _.orderBy(
-      filtered,
-      [states.sortColumn.column],
-      [states.sortColumn.order]
-    );
-
-    states.setData(sorted);
+        states.setSearchResults(sorted);
+      });
   }, [states.searchInput, states.sortColumn]);
 
   const handleSearch = (
@@ -47,12 +53,12 @@ function App() {
     e.preventDefault();
 
     states.setSearchInput({
-      employeeName: name === "" ? 0 : parseInt(name),
-      actionType: actionType === "" ? "" : actionType,
-      applicationType: applicationType === "" ? "" : applicationType,
+      employeeName: name === "" ? null : parseInt(name),
+      actionType: actionType === "" ? null : actionType,
+      applicationType: applicationType === "" ? null : applicationType,
       fromDate: fromDate === "" ? null : Date.parse(fromDate),
       toDate: toDate === "" ? null : Date.parse(toDate),
-      applicationId: applicationId === "" ? 0 : parseInt(applicationId),
+      applicationId: applicationId === "" ? null : parseInt(applicationId),
     });
     states.setCurrentPage(1);
   };
@@ -65,31 +71,29 @@ function App() {
     states.setSortColumn(newSortColumn);
   };
 
-  const dataPage = paginate(states.data, states.currentPage, states.pageSize);
+  const dataPage = paginate(
+    states.searchResults,
+    states.currentPage,
+    states.pageSize
+  );
 
   return (
-    <SearchContext.Provider
-      value={{
-        setSearchInput: states.setSearchInput,
-      }}
-    >
-      <div className="topContainer">
-        <Header handleSearch={handleSearch} />
-        <div className="container">
-          <Table
-            data={dataPage}
-            sortColumn={states.sortColumn}
-            onSort={handleSort}
-          />
-          <Pagination
-            itemsCount={states.data.length}
-            pageSize={states.pageSize}
-            currentPage={states.currentPage}
-            onPageChange={handlePageChange}
-          />
-        </div>
+    <div className="topContainer">
+      <Header handleSearch={handleSearch} />
+      <div className="container">
+        <Table
+          data={dataPage}
+          sortColumn={states.sortColumn}
+          onSort={handleSort}
+        />
+        <Pagination
+          itemsCount={states.searchResults?.length}
+          pageSize={states.pageSize}
+          currentPage={states.currentPage}
+          onPageChange={handlePageChange}
+        />
       </div>
-    </SearchContext.Provider>
+    </div>
   );
 }
 export default App;

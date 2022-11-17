@@ -8,7 +8,7 @@ function CustomDropdown({ title, label, setLabel, dataItems }) {
         <Dropdown>
           <label>{title}</label>
           <Dropdown.Toggle
-            style={{ width: "100%" }}
+            style={{ width: "100%", marginTop: 0 }}
             variant="outline-primary"
             id="dropdown-basic"
           >

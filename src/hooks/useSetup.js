@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { getData } from "../services/fakeDataService";
 
 export default function useSetup() {
-  const [data, setData] = useState(getData);
+  const [data, setData] = useState([]);
   const [pageSize, setPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [sortColumn, setSortColumn] = useState({
@@ -10,13 +9,14 @@ export default function useSetup() {
     order: "asc",
   });
   const [searchInput, setSearchInput] = useState({
-    employeeName: 0,
-    actionType: "",
-    applicationType: "",
+    employeeName: null,
+    actionType: null,
+    applicationType: null,
     fromDate: null,
     toDate: null,
-    applicationId: "",
+    applicationId: null,
   });
+  const [searchResults, setSearchResults] = useState([]);
 
   return {
     data,
@@ -28,5 +28,7 @@ export default function useSetup() {
     setSortColumn,
     searchInput,
     setSearchInput,
+    searchResults,
+    setSearchResults,
   };
 }
