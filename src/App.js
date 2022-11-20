@@ -18,15 +18,20 @@ function App() {
         return json;
       })
       .then((json) => {
-        let filtered = json;
-
+        let filtered;
         if (states.searchInput.fromDate && states.searchInput.toDate) {
           filtered = _.filter(json, (i) => {
             if (
               Date.parse(i.creationTimestamp) > states.searchInput.fromDate &&
               Date.parse(i.creationTimestamp) < states.searchInput.toDate
             ) {
-              return i;
+              if (states.searchInput.employeeName) {
+                if (i.logId === states.searchInput.employeeName) {
+                  return i;
+                }
+              } else {
+                return i;
+              }
             }
           });
         }
