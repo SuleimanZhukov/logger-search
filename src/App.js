@@ -18,7 +18,7 @@ function App() {
         return json;
       })
       .then((json) => {
-        let filtered;
+        let filtered = json;
         if (states.searchInput.fromDate && states.searchInput.toDate) {
           filtered = _.filter(json, (i) => {
             if (
