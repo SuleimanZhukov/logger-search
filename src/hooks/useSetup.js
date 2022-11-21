@@ -9,12 +9,12 @@ export default function useSetup() {
     order: "asc",
   });
   const [searchInput, setSearchInput] = useState({
-    employeeName: null,
+    toDate: null,
+    fromDate: null,
     actionType: null,
     applicationType: null,
-    fromDate: null,
-    toDate: null,
     applicationId: null,
+    logId: null,
   });
   const [searchResults, setSearchResults] = useState([]);
 

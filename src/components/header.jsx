@@ -6,7 +6,7 @@ import { actionTypes, applicationTypes } from "../utils/dropdownData";
 import "../css/header.css";
 
 const Header = ({ handleSearch }) => {
-  const [name, setName] = useState("");
+  const [logId, setLogId] = useState("");
   const [actionType, setActionType] = useState("");
   const [applicationType, setApplicationType] = useState("");
   const [fromDate, setFromDate] = useState();
@@ -19,7 +19,7 @@ const Header = ({ handleSearch }) => {
       onSubmit={(e) =>
         handleSearch(
           e,
-          name,
+          logId,
           actionType,
           applicationType,
           fromDate,
@@ -34,7 +34,7 @@ const Header = ({ handleSearch }) => {
             <TextInput
               title="Employee Name"
               placeholder="e.g. Admin.User"
-              setData={setName}
+              setData={setLogId}
             />
             <CustomDropdown
               title="Action Type"

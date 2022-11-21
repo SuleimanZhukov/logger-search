@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import * as JsSearch from "js-search";
 import useSetup from "./hooks/useSetup";
 import { fetchData } from "./services/axios";
 import { paginate } from "./utils/paginate";
@@ -19,21 +20,28 @@ function App() {
       })
       .then((json) => {
         let filtered = json;
-        if (states.searchInput.fromDate && states.searchInput.toDate) {
+
+        const filterBy = {};
+        Object.keys(states.searchInput).forEach((key) => {
+          if (states.searchInput[key]) {
+            filterBy[key] = states.searchInput[key];
+          }
+        });
+
+        if (filterBy.toDate || filterBy.fromDate) {
           filtered = _.filter(json, (i) => {
             if (
-              Date.parse(i.creationTimestamp) > states.searchInput.fromDate &&
-              Date.parse(i.creationTimestamp) < states.searchInput.toDate
+              Date.parse(i.creationTimestamp) > filterBy.fromDate &&
+              Date.parse(i.creationTimestamp) < filterBy.toDate
             ) {
-              if (states.searchInput.employeeName) {
-                if (i.logId === states.searchInput.employeeName) {
-                  return i;
-                }
-              } else {
-                return i;
-              }
+              return i;
             }
           });
+          delete filterBy.toDate;
+          delete filterBy.fromDate;
+          filtered = _.filter(filtered, filterBy);
+        } else {
+          filtered = _.filter(filtered, filterBy);
         }
 
         const sorted = _.orderBy(
@@ -48,7 +56,7 @@ function App() {
 
   const handleSearch = (
     e,
-    name,
+    logId,
     actionType,
     applicationType,
     fromDate,
@@ -58,7 +66,7 @@ function App() {
     e.preventDefault();
 
     states.setSearchInput({
-      employeeName: name === "" ? null : parseInt(name),
+      logId: logId === "" ? null : parseInt(logId),
       actionType: actionType === "" ? null : actionType,
       applicationType: applicationType === "" ? null : applicationType,
       fromDate: fromDate === "" ? null : Date.parse(fromDate),
